@@ -19,7 +19,6 @@ object Main extends App {
     def getCardValue(trumpCard: Suite): Int = {
       val trumpDefaultValue: Int = 100
       val defaultCurrentCardValue = ranks.indexOf(rank) + 2
-
       if (trumpCard == suite) defaultCurrentCardValue + trumpDefaultValue else defaultCurrentCardValue
     }
   }
