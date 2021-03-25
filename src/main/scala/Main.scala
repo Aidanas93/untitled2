@@ -1,11 +1,16 @@
 import data._
+
 import scala.util.Random
 
 object Main extends App {
   val suites = List(Spade, Heart, Club, Diamond)
   val ranks = List(Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King, Ace)
-  val game = Game(ShuffledDeck())
 
+  val shuffledDeck = ShuffledDeck() match {
+    case Some(shuffledDeck) => shuffledDeck
+    case None => throw new IllegalArgumentException("Illegal deck")
+  }
+  val game = Game(shuffledDeck)
   val players = game.play()
   println(players._1.scorePile.size)
   println(players._2.scorePile.size)
@@ -19,14 +24,18 @@ object Main extends App {
     }
   }
 
-  case class ShuffledDeck() {
-    val deck: List[Card] = for (r <- ranks; s <- suites) yield Card(r, s)
-    val validDeck =
-      if (deck.size <= 52 && deck.distinct.size == deck.size) deck
-      else throw new RuntimeException("Deck is invalid!")
-    val shuffledDeck = Random.shuffle(validDeck)
+  case class ShuffledDeck(deck: List[Card]) {
+    val shuffledDeck = Random.shuffle(deck)
 
     def split(): (List[Card], List[Card]) = shuffledDeck.splitAt(shuffledDeck.size / 2)
+  }
+
+  object ShuffledDeck {
+    def apply(): Option[ShuffledDeck] = {
+      val deck = for (r <- ranks; s <- suites) yield Card(r, s)
+      if (deck.size <= 52 && deck.distinct.size == deck.size) Some(new ShuffledDeck(deck))
+      else None
+    }
   }
 
   case class Player(hand: List[Card], scorePile: List[Card]) {
@@ -57,4 +66,5 @@ object Main extends App {
       playersScorePiles
     }
   }
+
 }
