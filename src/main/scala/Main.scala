@@ -10,6 +10,7 @@ object Main extends App {
     case Some(shuffledDeck) => shuffledDeck
     case None => throw new IllegalArgumentException("Illegal deck")
   }
+
   val game = Game(shuffledDeck)
   val players = game.play()
   println(players._1.scorePile.size)
@@ -23,8 +24,9 @@ object Main extends App {
     }
   }
 
-  case class ShuffledDeck(deck: List[Card]) {
+  case class ShuffledDeck private(deck: List[Card]) {
     val shuffledDeck = Random.shuffle(deck)
+
     def split(): (List[Card], List[Card]) = shuffledDeck.splitAt(shuffledDeck.size / 2)
   }
 
