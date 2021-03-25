@@ -57,5 +57,4 @@ object Main extends App {
       playersScorePiles
     }
   }
-
 }
