@@ -26,7 +26,6 @@ object Main extends App {
 
   case class ShuffledDeck(deck: List[Card]) {
     val shuffledDeck = Random.shuffle(deck)
-
     def split(): (List[Card], List[Card]) = shuffledDeck.splitAt(shuffledDeck.size / 2)
   }
 
